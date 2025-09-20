@@ -92,7 +92,13 @@ class _MyAppState extends State<MyApp> {
                         : Icons.dark_mode,
                   ),
                 ),
+                const SizedBox(width: 12),
 
+                FloatingActionButton(
+                  onPressed: () => print('toggled image'),
+                  tooltip: 'Toggle image',
+                  child: const Icon(Icons.image),
+                ),
               ],
             ),
           );
