@@ -94,6 +94,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 const SizedBox(width: 12),
 
+                // Image toggle button
                 FloatingActionButton(
                   onPressed: () => print('toggled image'),
                   tooltip: 'Toggle image',
