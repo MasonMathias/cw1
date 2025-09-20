@@ -1,70 +1,102 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.system;
   int _counter = 0;
-  void _incrementCounter() {
+
+  void _toggleTheme() {
     setState(() {
-      _counter++;
+      _themeMode =
+          _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     });
   }
 
+  void _incrementCounter() => setState(() => _counter++);
+
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text(widget.title),
+    final light = ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.deepPurple,
+        brightness: Brightness.light,
       ),
-      body: Center(
+    );
 
-        child: Column(
+    final dark = ThemeData(
+      useMaterial3: true,
+      colorScheme: const ColorScheme.dark(),
+    );
 
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+    return MaterialApp(
+      title: 'CW1',
+      theme: light,
+      darkTheme: dark,
+      themeMode: _themeMode,
+      debugShowCheckedModeBanner: false,
+
+      home: Builder(
+        builder: (context) {
+          return Scaffold(
+
+            appBar: AppBar(
+              title: const Text('CW1'),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'You have pushed the button this many times:',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ],
+              ),
+            ),
+
+            floatingActionButton: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+
+                // Increment Button
+                FloatingActionButton(
+                  onPressed: _incrementCounter,
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.add),
+                ),
+                const SizedBox(width: 12),
+
+                // Light / Dark button
+                FloatingActionButton(
+                  onPressed: _toggleTheme,
+                  tooltip: 'Toggle theme',
+                  child: Icon(
+                    _themeMode == ThemeMode.dark
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
+                  ),
+                ),
+
+              ],
+            ),
+          );
+        },
       ),
     );
   }
